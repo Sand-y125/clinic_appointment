@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-group mt-3">
-            <a href="/clinic_appointment_dup/public/index.php" class="btn btn-outline">
+            <a href="/clinic_appointment/public/index.php" class="btn btn-outline">
                 <i class="fas fa-home"></i> Back to Homepage
             </a>
         </div>
