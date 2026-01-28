@@ -75,7 +75,6 @@ $appointments = $stmt->fetchAll();
                 <?= strlen($apt['reason']) > 40 ? '...' : '' ?>
             </td>
 
-            <!-- STATUS -->
             <td>
                 <?php if ($apt['status'] === 'pending'): ?>
                     <span class="badge badge-warning">Pending</span>
@@ -88,7 +87,6 @@ $appointments = $stmt->fetchAll();
                 <?php endif; ?>
             </td>
 
-            <!-- ACTIONS -->
             <td class="actions">
                 <div class="action-buttons">
 

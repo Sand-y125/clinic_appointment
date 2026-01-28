@@ -25,7 +25,7 @@ catch (PDOException $e) {
     die("Database connection failed. Please contact the administrator.");
 }
 
-function getDB() {  // Function to get database connection
+function getDB() {  //function to get database connection
 
     global $pdo;
     return $pdo;

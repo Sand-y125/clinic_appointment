@@ -4,7 +4,6 @@ include '../includes/header.php';
 
 $pdo = getDB();
 
-// Get doctor ID
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id <= 0) {
@@ -12,7 +11,6 @@ if ($id <= 0) {
     redirect('doctors.php');
 }
 
-// Get doctor data
 $stmt = $pdo->prepare("SELECT * FROM doctors WHERE id = ?");
 $stmt->execute([$id]);
 $doctor = $stmt->fetch();

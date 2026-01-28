@@ -11,7 +11,6 @@ if ($id <= 0) {
     redirect('appointments.php');
 }
 
-// Fetch appointment details
 $stmt = $pdo->prepare("
     SELECT 
         a.id, a.patient_id, a.doctor_id,

@@ -815,18 +815,15 @@ body {
 
 
 
-/* ===== ACTION BUTTONS FIX ===== */
 
-/* 1️⃣ Table buttons: always horizontal */
 .data-table td.actions .action-buttons {
-    display: flex !important;   /* horizontal layout */
-    flex-wrap: wrap;            /* wrap if too many buttons */
+    display: flex !important;   
+    flex-wrap: wrap;            
     gap: 0.5rem;
     justify-content: flex-start;
     align-items: center;
 }
 
-/* 2️⃣ Non-table buttons (cards, quick-actions) */
 .quick-actions .action-buttons,
 .detail-card .action-buttons {
     display: grid;
@@ -834,14 +831,12 @@ body {
     gap: 1rem;
 }
 
-/* 3️⃣ Mobile / small screen: stack card buttons */
 @media (max-width: 768px) {
     .quick-actions .action-buttons,
     .detail-card .action-buttons {
-        grid-template-columns: 1fr;  /* stack vertically */
+        grid-template-columns: 1fr;  
     }
     
-    /* Table buttons: remain horizontal, but allow wrapping */
     .data-table td.actions .action-buttons {
         flex-direction: row;
         flex-wrap: wrap;
@@ -881,7 +876,6 @@ body {
         grid-template-columns: 1fr;
     }
 
-    /* Scoped: only non-table action buttons */
     .quick-actions .action-buttons,
     .detail-card .action-buttons {
         grid-template-columns: 1fr;

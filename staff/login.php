@@ -4,7 +4,6 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 $error = '';
-
 $csrfToken = generateCSRFToken();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid request. Please try again.';
     } else {
-
         $username = trim($_POST['username']);
         $password = $_POST['password'];
 
@@ -20,27 +18,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Both fields are required.';
         } else {
 
-            $stmt = $pdo->prepare(
-                "SELECT id, password FROM users WHERE username = :username"
-            );
+            $maxAttempts = 5;
+            $lockoutTime = 15 * 60; // 15 minutes
+
+            $stmt = $pdo->prepare("SELECT id, password, failed_attempts, last_failed_login FROM users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch();
 
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user) {
 
-                session_regenerate_id(true);
-                $_SESSION['user_id'] = $user['id'];
 
-                header('Location: /clinic_appointment/staff/dashboard.php');
-                exit;
+                $lastFailed = $user['last_failed_login'] ? strtotime($user['last_failed_login']) : 0;
+                if ($user['failed_attempts'] >= $maxAttempts && $lastFailed > time() - $lockoutTime) {
+                    $error = "Too many failed login attempts. Try again later.";
+                } else {
+                    if (password_verify($password, $user['password'])) {
+
+
+                        $stmt = $pdo->prepare("UPDATE users SET failed_attempts = 0, last_failed_login = NULL WHERE id = :id");
+                        $stmt->execute(['id' => $user['id']]);
+
+                        session_regenerate_id(true);
+                        $_SESSION['user_id'] = $user['id'];
+                        header('Location: /clinic_appointment/staff/dashboard.php');
+                        exit;
+
+                    } else {
+                        $stmt = $pdo->prepare("UPDATE users SET failed_attempts = failed_attempts + 1, last_failed_login = NOW() WHERE id = :id");
+                        $stmt->execute(['id' => $user['id']]);
+                        $error = 'Invalid username or password.';
+                    }
+                }
 
             } else {
                 $error = 'Invalid username or password.';
             }
+
         }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html>

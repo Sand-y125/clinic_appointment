@@ -12,7 +12,6 @@ if ($id <= 0) {
 
 $pdo = getDB();
 
-/* Check existing appointments */
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM appointments WHERE patient_id = ?");
 $stmt->execute([$id]);
 $appointmentCount = $stmt->fetchColumn();
@@ -25,7 +24,6 @@ if ($appointmentCount > 0) {
     redirect('patients.php');
 }
 
-/* Delete patient */
 try {
     $stmt = $pdo->prepare("DELETE FROM patients WHERE id = ?");
     $stmt->execute([$id]);

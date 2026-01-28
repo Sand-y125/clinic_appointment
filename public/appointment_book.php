@@ -6,7 +6,6 @@ require_once __DIR__ . '/../includes/functions.php';
 $pdo = getDB();
 $errors = [];
 
-/* handle form submission */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
