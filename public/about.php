@@ -101,7 +101,7 @@
     <h1>About Sandy Medical Clinic</h1>
 
     <p>
-        SandyMed Clinic is a trusted healthcare provider dedicated to delivering
+        Sandy Medical Clinic is a trusted healthcare provider dedicated to delivering
         high-quality medical services with compassion and care. Our goal is to
         make healthcare accessible, efficient, and patient-friendly for everyone.
     </p>
