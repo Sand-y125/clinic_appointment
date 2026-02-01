@@ -3,6 +3,10 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 
+if (!defined('BASE_URL')) {
+    define('BASE_URL', '/~np03cs4a240022/clinic_appointment');
+}
+
 $error = '';
 $csrfToken = generateCSRFToken();
 
@@ -32,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($user['failed_attempts'] >= $maxAttempts && $lastFailed > time() - $lockoutTime) {
                     $error = "Too many failed login attempts. Try again later.";
                 } else {
-                    if (password_verify($password, $user['password'])) {
+                    if (password_verify ($password, $user['password'])) {
 
 
                         $stmt = $pdo->prepare("UPDATE users SET failed_attempts = 0, last_failed_login = NULL WHERE id = :id");
@@ -40,8 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         session_regenerate_id(true);
                         $_SESSION['user_id'] = $user['id'];
-                        header('Location: /clinic_appointment/staff/dashboard.php');
-                        exit;
+header('Location: ' . BASE_URL . '/staff/dashboard.php');
+exit;
+
+
 
                     } else {
                         $stmt = $pdo->prepare("UPDATE users SET failed_attempts = failed_attempts + 1, last_failed_login = NOW() WHERE id = :id");
@@ -64,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Staff Login</title>
-    <link rel="stylesheet" href="/clinic_appointment/staff/assest/css/style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/staff/assest/css/style.css">
 </head>
 <body>
 
@@ -112,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-group mt-3">
-            <a href="/clinic_appointment/public/index.php" class="btn btn-outline">
+<a href="<?= BASE_URL ?>/public/index.php" class="btn btn-outline">
                 <i class="fas fa-home"></i> Back to Homepage
             </a>
         </div>

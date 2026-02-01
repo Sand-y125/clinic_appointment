@@ -1,12 +1,11 @@
 <?php
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'clinic_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_CHARSET', 'utf8mb4');
+define('DB_NAME', 'np03cs4a240022');
+define('DB_USER', 'np03cs4a240022');
+define('DB_PASS', 'tybo8lFDsh');
 
 
-$dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;    // Creating  DSN (Data Source Name)
+$dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;    //Creating  DSN (Data Source Name)
 
 
 $options = [PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION,

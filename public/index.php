@@ -193,9 +193,9 @@ footer {
 <header>
     <h2><i class="fas fa-clinic-medical"></i>Sandy Medical Clinic</h2>
     <nav>
-        <a href="#">Home</a>
-        <a href="/clinic_appointment/public/about.php">About us</a>
-        <a href="/clinic_appointment/public/appointment_book.php">Book Appointment</a>
+        <a href="index.php">Home</a>
+        <a href="about.php">About us</a>
+        <a href="appointment_book.php">Book Appointment</a>
 
     </nav>
 
@@ -204,28 +204,27 @@ footer {
 
 <section class="hero">
     <div class="hero-content">
-        <h1>Your Health,<br>Our Responsibility</h1>
+    <h1>Your Health,<br>Our Responsibility</h1>
+    <p>
+    Book your clinic appointment easily and quickly.
+    Our doctors are ready to serve you with care and professionalism.
+    </p>
 
-        <p>
-            Book your clinic appointment easily and quickly.
-            Our doctors are ready to serve you with care and professionalism.
-        </p>
+    <div class="hero-buttons">
+    <a href="appointment_book.php" class="btn-primary">
+    <i class="fas fa-calendar-check"></i> Book Appointment
+    </a>
 
-        <div class="hero-buttons">
-            <a href="/clinic_appointment/public/appointment_book.php" class="btn-primary">
-                <i class="fas fa-calendar-check"></i> Book Appointment
-            </a>
+    <a href="#" class="btn-outline">
+    <i class="fas fa-stethoscope"></i> Our Services
+    </a>
 
-            <a href="#" class="btn-outline">
-                <i class="fas fa-stethoscope"></i> Our Services
-            </a>
-        </div>
+    </div>
     </div>
 
-    <!-- IMAGE COLUMN (separate) -->
     <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d"
-             alt="Doctor">
+    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d"
+    alt="Doctor">
     </div>
 </section>
 

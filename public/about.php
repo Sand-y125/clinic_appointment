@@ -91,9 +91,9 @@
 <header>
     <h2><i class="fas fa-clinic-medical"></i> Sandy Medical Clinic</h2>
     <nav>
-        <a href="/clinic_appointment/public/index.php">Home</a>
+        <a href="index.php">Home</a>
         <a href="#">About Us</a>
-        <a href="/clinic_appointment/public/appointment_book.php">Book Appointment</a>
+        <a href="appointment_book.php">Book Appointment</a>
     </nav>
 </header>
 
