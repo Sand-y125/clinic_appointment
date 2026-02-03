@@ -15,11 +15,7 @@ if ($id <= 0) {
 $pdo = getDB();
 
 try {
-    $stmt = $pdo->prepare("
-        UPDATE appointments
-        SET status = 'rejected'
-        WHERE id = ?
-    ");
+    $stmt = $pdo->prepare("UPDATE appointments SET status = 'rejected'WHERE id = ?");
     $stmt->execute([$id]);
 
     if ($stmt->rowCount() > 0) {

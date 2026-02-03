@@ -9,6 +9,7 @@ require_once __DIR__ . '/../includes/auth.php';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id <= 0) {
+    
     setFlashMessage('error', 'Invalid appointment ID.');
     redirect('appointments.php');
 }
@@ -16,20 +17,18 @@ if ($id <= 0) {
 $pdo = getDB();
 
 try {
-    $stmt = $pdo->prepare("
-        UPDATE appointments
-        SET status = 'scheduled'
-        WHERE id = ?
-    ");
+    $stmt = $pdo->prepare("UPDATE appointments SET status = 'scheduled' WHERE id = ?");
     $stmt->execute([$id]);
 
     if ($stmt->rowCount() > 0) {
         setFlashMessage('success', 'Appointment approved successfully!');
-    } else {
+    } 
+    else {
         setFlashMessage('error', 'Appointment not found or already approved.');
     }
 
 } catch (PDOException $e) {
+
     setFlashMessage('error', 'Error approving appointment.');
 }
 

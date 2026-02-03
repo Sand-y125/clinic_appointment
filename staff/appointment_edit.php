@@ -27,13 +27,10 @@ if (  !$appointment) {
 
 
 $patients =  $pdo->query("SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM patients ORDER BY last_name, first_name")->fetchAll();
-
-
-
 $doctors = $pdo->query( "SELECT id, CONCAT(first_name, ' ', last_name) AS name, specialization FROM doctors ORDER BY last_name, first_name")->fetchAll();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
         $errors[] = 'Invalid form submission.';
@@ -42,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $patient_id = (int)($_POST['patient_id'] ?? 0);
     $doctor_id = (int)($_POST['doctor_id'] ?? 0);
-    $appointment_date = $_POST['appointment_date'] ?? '';      // Validating inputs
-
+    $appointment_date = $_POST['appointment_date'] ?? '';      
     $appointment_time = $_POST['appointment_time'] ?? '';
     $reason = trim($_POST['reason'] ?? '');
     
@@ -52,17 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($patient_id <= 0) $errors[] = 'Please select a patient.';
     if ($doctor_id <= 0) $errors[] = 'Please select a doctor.';
     if (empty($appointment_date)) {
+
         $errors[] = 'Appointment date is required.';
     } 
-    elseif (!validateFutureDate($appointment_date)) {
+    
 
-        $errors[] = 'Appointment date must be today or in the future.';
-    }
+    if (empty($appointment_time)) 
+        $errors[] = 'Appointment time is required.';
 
-
-    if (empty($appointment_time)) $errors[] = 'Appointment time is required.';
-
-    if (empty($reason)) $errors[] = 'Reason for visit is required.';
+    if (empty($reason))
+      $errors[] = 'Reason for visit is required.';
     
 
     if (empty($errors)) {
@@ -76,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
 
         try {
-            $stmt = $pdo->prepare("UPDATE appointments SET patient_id = ?, doctor_id = ?, appointment_date = ?, appointment_time = ?, reason = ? WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE appointments SET patient_id = ?, doctor_id = ?, appointment_date = ?,appointment_time = ?, reason = ? WHERE id = ?");
             $stmt->execute([$patient_id,$doctor_id,$appointment_date,$appointment_time,$reason,$id]);
             
 
@@ -105,15 +100,6 @@ $csrf_token = generateCSRFToken();
 
 <div class="page-header">
 <h1><i class="fas fa-calendar-edit"></i> Edit Appointment</h1>
-</div>
-
-
-<?php if (!empty($errors)): ?>
-<div class="alert alert-error">
-    <ul><?php foreach ($errors as $error): ?>
-    <li><?php echo escape($error); ?></li>
-        <?php endforeach; ?>
-    </ul>
 </div>
 
             <?php endif; ?>
@@ -177,7 +163,6 @@ $csrf_token = generateCSRFToken();
 <select id="appointment_time" name="appointment_time" required>
 <option value="<?php echo escape($_POST['appointment_time']); ?>"><?php echo escape(formatTime($_POST['appointment_time'])); ?></option>
 </select>
-<small id="availability-message" class="availability-message"></small>
         </div>
     </div>
     

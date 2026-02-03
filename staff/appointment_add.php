@@ -1,12 +1,9 @@
 <?php
-
 include '../includes/header.php';
 require_once '../includes/session.php'; //
 
 
-
 $pdo = getDB();
-
 $errors  = [];
 
 
@@ -25,8 +22,8 @@ if ( $_SERVER['REQUEST_METHOD']  ==  'POST') {
     
 
    
-    $patient_id =  (int)     ($_POST ['patient_id'] ?? 0);
-    $doctor_id =  (int) ($_POST ['doctor_id'] ?? 0);          //validating inputs
+    $patient_id =  (int)($_POST ['patient_id'] ?? 0);
+    $doctor_id =  (int) ($_POST ['doctor_id'] ?? 0);         
     $appointment_date  =    $_POST ['appointment_date'] ?? '';
     $appointment_time  =  $_POST ['appointment_time'] ?? '';
     $reason =  trim ($_POST ['reason'] ?? '');
@@ -37,27 +34,21 @@ if ( $_SERVER['REQUEST_METHOD']  ==  'POST') {
 
         $errors[]  = 'Appointment date is required.';
     }
-     elseif (!validateFutureDate($appointment_date)) {
+    
+    if(empty($appointment_time)) $errors[] = 'Appointment time is required.';
 
-        $errors[] = 'Appointment date must be today or in the future.';
-    }
-
-    if (empty($appointment_time)) $errors[] = 'Appointment time is required.';
-
-    if (empty($reason)) $errors[] = 'Reason for visit is required.';
+    if(empty($reason)) $errors[] = 'Reason for visit is required.';
     
 
 
     if (empty($errors)) {
-
-        if ( !isSlotAvailable($pdo, $doctor_id, $appointment_date, $appointment_time)) {
+        if( !isSlotAvailable($pdo, $doctor_id, $appointment_date, $appointment_time)) {
             $errors[] = 'This time slot is already booked. Please select another time.';
         }
     }
 
     
     if ( empty($errors)) {
-
         try {
             $stmt = $pdo->prepare("INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason) VALUES (?, ?, ?, ?, ?)");
 
@@ -70,7 +61,6 @@ if ( $_SERVER['REQUEST_METHOD']  ==  'POST') {
 
         } 
         catch (PDOException $e) {
-
             $errors[] = 'Database error: ' . $e->getMessage();
         }
     }
@@ -86,19 +76,6 @@ $csrf_token = generateCSRFToken();
 <div class="page-header">
 <h1><i class="fas fa-calendar-plus"></i> Book New Appointment</h1>
 </div>
-
-
-<?php if (!empty($errors)): ?>
-<div class="alert alert-error">
-    <ul><?php foreach ($errors as $error): ?>
-    <li><?php echo escape($error); ?></li>
-    <?php endforeach; ?>
-    </ul>
-</div>
-<?php endif; ?>
-
-
-
 
 <form  method="POST" action="" class="form-card" id="appointmentForm">
 <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
@@ -149,17 +126,16 @@ $csrf_token = generateCSRFToken();
     <div class="form-row">
 
     <div class="form-group">
-            <label for="appointment_date">Appointment Date <span class="required">*</span></label>
-            <input type="date" id="appointment_date" name="appointment_date" 
-                   min="<?php echo date('Y-m-d'); ?>" 
-                   value="<?php echo isset($_POST['appointment_date']) ? escape($_POST['appointment_date']) : ''; ?>"required>
-        </div>
+    <label for="appointment_date">Appointment Date <span class="required">*</span></label>
+    <input type="date" id="appointment_date" name="appointment_date" min="<?php echo date('Y-m-d'); ?>" 
+    value="<?php echo isset($_POST['appointment_date']) ? escape($_POST['appointment_date']) : ''; ?>"required>
+    </div>
 
 
         
         <div class="form-group">
-            <label for="appointment_time">Appointment Time <span class="required">*</span></label>
-            <select id="appointment_time" name="appointment_time" required>
+        <label for="appointment_time">Appointment Time <span class="required">*</span></label>
+        <select id="appointment_time" name="appointment_time" required>
     <option value="">Select time</option>
     <option value="09:00">09:00 AM</option>
     <option value="10:00">10:00 AM</option>
@@ -170,14 +146,14 @@ $csrf_token = generateCSRFToken();
     <option value="16:00">04:00 PM</option>
 </select>
 
-            <small id="availability-message" class="availability-message"></small>
+        <small id="availability-message" class="availability-message"></small>
         </div>
     </div>
     
 
     <div class="form-group">
-        <label for="reason">Reason for Visit <span class="required">*</span></label>
-        <textarea id="reason" name="reason" rows="4" required placeholder="Please describe the reason for your appointment..."><?php echo isset($_POST['reason']) ? escape($_POST['reason']) : ''; ?></textarea>
+    <label for="reason">Reason for Visit <span class="required">*</span></label>
+    <textarea id="reason" name="reason" required placeholder="Please describe the reason for your appointment..."><?php echo isset($_POST['reason']) ? escape($_POST['reason']) : ''; ?></textarea>
     </div>
     
     

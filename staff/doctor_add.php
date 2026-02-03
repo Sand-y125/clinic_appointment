@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     $first_name = trim($_POST['first_name'] ?? '');
-    $last_name = trim($_POST['last_name'] ?? '');    // validating input
+    $last_name = trim($_POST['last_name'] ?? '');    
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $specialization = trim($_POST['specialization'] ?? '');
@@ -21,8 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $availability_days = isset($_POST['availability_days']) ? implode(',', $_POST['availability_days']) : '';
     
     if (empty($first_name)) $errors[] = 'First name is required.';
+
     if (empty($last_name)) $errors[] = 'Last name is required.';
+
     if (empty($email)) {
+
         $errors[] = 'Email is required.';
     } 
 
@@ -39,9 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     if (empty($specialization)) $errors[] = 'Specialization is required.';
- if (empty($license_number)) $errors[] = 'License number is required.';
+
+    if (empty($license_number)) $errors[] = 'License number is required.';
+
        if ($years_of_experience < 0) $errors[] = 'Years of experience must be a positive number.';
-          if ($consultation_fee <= 0) $errors[] = 'Consultation fee must be greater than 0.';
+
+        if ($consultation_fee <= 0) $errors[] = 'Consultation fee must be greater than 0.';
     
 
 
@@ -67,8 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
 
         try {
-            $stmt = $pdo->prepare("
-            INSERT INTO doctors (first_name, last_name, email, phone, specialization, license_number, years_of_experience, consultation_fee, availability_days)
+            $stmt = $pdo->prepare("INSERT INTO doctors (first_name, last_name, email, phone, specialization, license_number, years_of_experience, consultation_fee, availability_days)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
@@ -103,14 +108,6 @@ $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Su
 <h1><i class="fas fa-user-md-plus"></i> Add New Doctor</h1>
 </div>
 
-<?php if (!empty($errors)): ?>
-<div class="alert alert-error">
-    <ul>
-    <?php foreach ($errors as $error): ?>
-    <li><?php echo escape($error); ?></li>
-    <?php endforeach; ?>
-    </ul>
-</div>
 
 
 <?php endif; ?>
@@ -124,13 +121,13 @@ $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Su
     
 <div class="form-row">
     <div class="form-group">
-        <label for="first_name">First Name <span class="required">*</span></label>
-        <input type="text" id="first_name" name="first_name" value="<?php echo isset($_POST['first_name']) ? escape($_POST['first_name']) : ''; ?>" required>
+    <label for="first_name">First Name <span class="required">*</span></label>
+    <input type="text" id="first_name" name="first_name" value="<?php echo isset($_POST['first_name']) ? escape($_POST['first_name']) : ''; ?>" required>
         </div>
         
 
 
-        <div class="form-group">
+    <div class="form-group">
     <label for="last_name">Last Name <span class="required">*</span></label>
     <input type="text" id="last_name" name="last_name" value=" <?php echo isset($_POST['last_name']) ? escape($_POST['last_name']) : ''; ?>" required>
     </div>
